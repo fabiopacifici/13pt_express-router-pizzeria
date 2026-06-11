@@ -5,28 +5,11 @@ const port = 3000;
 const pizzasRouter = require('./routers/pizzas');
 // import the logRequest middleware
 const logRequest = require('./middlewares/logReques');
+const serverError = require('./middlewares/serverError');
+const notFound = require('./middlewares/notFound');
 
-// 📌 Global Middewares
-// This is a global middleware that is called on every request to the server.
-//app.use(logRequest);
-
-
-/* With anonymous function */
-
-/*
-app.use((req, res, next) => {
-    // log the http method, the url, and the timestamp of the request
-    console.log(`[${new Date().toISOString()}] ${req.method} - ${req.url} - ${req.ip}`);
-    next();
-}); */
-
-// This is a global middleware that is called on every request to the server, but only for routes starting with /api/
-/* app.use('/api/', (req, res, next) => {
-  // log the http method, the url, and the timestamp of the request
-  console.log(`[${new Date().toISOString()}] ${req.method} - ${req.url} - ${req.ip}`);
-  next();
-}); */
-
+// use the logRequest middleware for all routes
+app.use(logRequest);
 // register the static assets folder to serve static files like HTML, CSS, and JavaScript
 app.use(express.static('public'));
 
@@ -42,18 +25,10 @@ app.listen(port, () => {
 
 
 
-// 📌 Register the middleware only for a specific route, in this case, the / route
-// create the first route for the pizzeria entry point
-/* app.get('/', (req, res, next) => {
-  // log the http method, the url, and the timestamp of the request
-  console.log(`[${new Date().toISOString()}] ${req.method} - ${req.url} - ${req.ip}`);
-  next();
-}, (req, res) => {
-  res.json({ message: 'Welcome to the Pizzeria API!' });
-}); */
-
-
 app.get('/', (req, res) => {
+
+  //app.daje('Welcome to the Pizzeria API!');
+
   res.json({ message: 'Welcome to the Pizzeria API!' });
 });
 
@@ -61,3 +36,9 @@ app.get('/', (req, res) => {
 app.use('/api/pizzas', pizzasRouter);
 
 
+// server error middlware 
+
+app.use(serverError);
+
+// 404 not found middleware
+app.use(notFound);
