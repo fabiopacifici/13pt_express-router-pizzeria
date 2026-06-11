@@ -2,12 +2,17 @@ const express = require('express');
 const router = express.Router();
 // import the pizzas data
 const pizzaController = require('../controllers/pizzaController');
+const logRequest = require('../middlewares/logReques');
+
+
+// on every route in this router, log the request
+//router.use(logRequest);
 
 // INDEX route to return the list of pizzas
-router.get('/', pizzaController.index);
+router.get('/', logRequest, pizzaController.index);
 
 // SHOW route to return a single pizza by id
-router.get('/:id', pizzaController.show);
+router.get('/:id', logRequest, pizzaController.show);
 
 // STORE route to create a new pizza
 router.post('/', pizzaController.store);

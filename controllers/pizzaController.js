@@ -72,11 +72,30 @@ const store = (req, res) => {
 
 
 
-
-
 // update a pizza by id (not implemented yet)
 const update = (req, res) => {
-  res.json({ message: 'Update a pizza by id' });
+
+  // get the pizza id from the request parameters
+  const pizzaId = parseInt(req.params.id);
+
+  // find the pizza with the matching id
+  const thisPizza = pizzas.find(pizza => pizza.id === pizzaId);
+
+  // status code 404 if the pizza is not found
+  if (!thisPizza) {
+    return res.status(404).json({ error: true, message: '404 Pizza not found' });
+  }
+
+  // update the pizza properties with the request body data
+  thisPizza.name = req.body.name || thisPizza.name;
+  thisPizza.image = req.body.image || thisPizza.image;
+  thisPizza.ingredients = req.body.ingredients || thisPizza.ingredients;
+
+  // log the updated pizza object
+  console.log(thisPizza);
+
+  // return the response with the updated pizza object in JSON format
+  res.json(thisPizza);
 }
 
 
